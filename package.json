@@ -1,11 +1,27 @@
 {
-  "name": "your-app",
+  "name": "running-komoju-game",
+  "license": "MIT",
   "version": "0.1.0",
-  "main": "app.js",
+  "main": "./index.js",
+  "engines": {
+    "node": "12.20.2"
+  },
   "scripts": {
-      "start": "electron ."
+    "dev:lite": "NODE_ENV=development parcel serve --no-source-maps -p 3000 --out-dir ./.cache/_dev ./src/dev-index.html",
+    "dev": "concurrently -k -n parcel,elctrn 'yarn run dev:app' 'yarn run dev:electron'",
+    "dev:app": "NODE_ENV=development parcel serve --no-source-maps --public-url . --target node --out-dir ./.cache/_dev ./src/index.js ./src/index.html",
+    "dev:electron": "NODE_ENV=development nodemon --watch './.cache/_dev/*.html' --watch './.cache/_dev/*.js' --exec 'electron .'"
   },
   "dependencies": {
     "electron": "^11.2.3"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "parcel": "^1.12.4",
+    "prettier": "^2.2.1"
   }
 }

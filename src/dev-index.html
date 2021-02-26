@@ -10,6 +10,9 @@
   <body style="padding: 0; margin: 0">
     <canvas id="canvas"></canvas>
     <script src="./ui.js"></script>
+    <br />
+    <br />
+    <button onclick="document.dispatchEvent(new CustomEvent('electron-bridge-touchbar-tapped'));">Touchbar</button>
     <script>
       // fake electron bridge
       document.addEventListener("electron-bridge", (e) => {

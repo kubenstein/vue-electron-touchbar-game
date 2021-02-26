@@ -1,22 +1,10 @@
-const path = require("path");
-const { app, BrowserWindow, TouchBar, nativeImage, ipcMain } = require("electron");
+import path from "path";
+import { app, BrowserWindow, TouchBar, nativeImage, ipcMain } from "electron";
 
 const { TouchBarButton } = TouchBar;
 
-let b;
-const touchBar = new TouchBar({
-  items: [
-    (b = new TouchBarButton({
-      label: "loading...",
-      click: console.log,
-    })),
-  ],
-});
-
-let window;
-
 app.whenReady().then(() => {
-  window = new BrowserWindow({
+  const window = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -26,10 +14,22 @@ app.whenReady().then(() => {
   });
   window.webContents.openDevTools();
   window.loadFile(path.join(__dirname, "./index.html"));
-  window.setTouchBar(touchBar);
 
-  ipcMain.on("newImage", (event, arg) => {
-    b.label = "";
-    b.icon = nativeImage.createFromDataURL(arg);
+  ipcMain.on("rerender", (_event, arg) => {
+    screenBtn.label = "";
+    screenBtn.icon = nativeImage.createFromDataURL(arg);
   });
+
+  const screenBtn = new TouchBarButton({
+    label: "loading...",
+    click: () => {
+      window.webContents.send("electron-bridge-touchbar-tapped");
+    },
+  });
+
+  const touchBar = new TouchBar({
+    items: [screenBtn],
+  });
+
+  window.setTouchBar(touchBar);
 });

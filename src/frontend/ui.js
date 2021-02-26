@@ -1,4 +1,4 @@
-import glyph from "./glyph.png";
+import glyph from "./assets/glyph.png";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");

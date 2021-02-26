@@ -4,7 +4,7 @@
       <KonvaImage :x="0" :y="0" :url="bgUrl" />
       <Logo v-if="state === 'PLAY'" />
       <Score v-if="state === 'PLAY'" :value="score" />
-      <KonvaImage :x="dinoX" :y="dinoY" :url="dinoUrl" />
+      <KonvaImage v-if="state !== 'WELCOME'" :x="dinoX" :y="dinoY" :url="dinoUrl" />
       <KonvaImage
         v-for="missile in missiles"
         :key="missile.id"
@@ -13,6 +13,7 @@
         :url="missileUrl"
       />
       <GameOver v-if="state === 'GAME_OVER'" :value="score" />
+      <Welcome v-if="state === 'WELCOME'" />
     </v-layer>
   </v-stage>
 </template>
@@ -21,6 +22,7 @@
 import Logo from "../Logo/index";
 import Score from "../Score/index";
 import GameOver from "../GameOver/index";
+import Welcome from "../Welcome/index";
 import KonvaImage from "../KonvaImage/index";
 import komojuFrontUrl from "../../assets/komoju-front.png";
 import komojuBackUrl from "../../assets/komoju-back.png";
@@ -31,13 +33,14 @@ export default {
   components: {
     Logo,
     GameOver,
+    Welcome,
     Score,
     KonvaImage,
   },
 
   data() {
     return {
-      state: "PLAY",
+      state: "WELCOME",
       interval: null,
       totalMissilesCount: 0,
       missiles: [],
@@ -79,7 +82,6 @@ export default {
       this.dinoPosition *= -1;
       this.state = "PLAY";
     });
-    this.startGame();
   },
 
   beforeDestroy() {

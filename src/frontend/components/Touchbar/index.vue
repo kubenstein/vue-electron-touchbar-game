@@ -3,7 +3,14 @@
     <v-layer>
       <KonvaImage :x="0" :y="0" :url="bgUrl" />
       <Logo />
-      <KonvaImage :x="x" :y="y" :url="url" />
+      <KonvaImage :x="dinoX" :y="dinoY" :url="dinoUrl" />
+      <KonvaImage
+        v-for="missile in missiles"
+        :key="missile.id"
+        :x="missile.x"
+        :y="missile.position === 1 ? 0 : 16"
+        :url="missileUrl"
+      />
     </v-layer>
   </v-stage>
 </template>
@@ -13,6 +20,7 @@ import Logo from "../Logo/index";
 import KonvaImage from "../KonvaImage/index";
 import komojuFrontUrl from "../../assets/komoju-front.png";
 import komojuBackUrl from "../../assets/komoju-back.png";
+import missileUrl from "../../assets/missile.png";
 import bgUrl from "../../assets/bg.png";
 
 export default {
@@ -23,39 +31,73 @@ export default {
 
   data() {
     return {
-      dinoSpeed: 5,
-      x: 50,
-      direction: 1,
-      position: 1,
+      missiles: [],
+      missileSpeed: 5,
+      lastMissileTimestamp: 0,
+      dinoSpeed: 3,
+      dinoX: 50,
+      dinoDirection: 1,
+      dinoPosition: 1,
     };
   },
 
   computed: {
     bgUrl: () => bgUrl,
+    missileUrl: () => missileUrl,
 
-    url() {
-      return this.direction === 1 ? komojuBackUrl : komojuFrontUrl;
+    dinoUrl() {
+      return this.dinoDirection === 1 ? komojuBackUrl : komojuFrontUrl;
     },
 
-    y() {
-      return this.position === 1 ? 0 : 16;
+    dinoY() {
+      return this.dinoPosition === 1 ? 0 : 16;
     },
   },
 
   mounted() {
     document.addEventListener("electron-bridge-touchbar-tapped", () => {
-      this.position *= -1;
+      this.dinoPosition *= -1;
     });
 
     setInterval(() => {
-      if (this.direction === 1) {
-        this.x = this.x + this.dinoSpeed;
+      this.moveDino();
+      this.moveMissiles();
+      this.spawnMissiles();
+    }, 1000 / 30);
+  },
+
+  methods: {
+    moveDino() {
+      if (this.dinoDirection === 1) {
+        this.dinoX = this.dinoX + this.dinoSpeed;
       } else {
-        this.x = this.x + this.dinoSpeed * -1;
+        this.dinoX = this.dinoX + this.dinoSpeed * -1;
       }
 
-      if (this.x > 700 || this.x < 50) this.direction *= -1;
-    }, 1000 / 30);
+      if (this.dinoX > 700 || this.dinoX < 50) this.dinoDirection *= -1;
+    },
+    moveMissiles() {
+      this.missiles = this.missiles
+        .map((missile) =>
+          Object.assign({}, missile, {
+            x: missile.x - this.missileSpeed,
+          })
+        )
+        .filter((missile) => missile.x > -16);
+    },
+    spawnMissiles() {
+      const shouldSpawn = Math.random() * 100 < 3 && this.lastMissileTimestamp - Date.now() < -500;
+
+      if (shouldSpawn) {
+        const newMissile = {
+          id: `${Math.random()}`,
+          x: 1040,
+          position: Math.random() * 100 < 50 ? 1 : 0,
+        };
+        this.lastMissileTimestamp = Date.now();
+        this.missiles.push(newMissile);
+      }
+    },
   },
 };
 </script>

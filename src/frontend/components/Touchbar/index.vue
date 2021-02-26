@@ -2,27 +2,14 @@
   <v-stage id="app" :config="{ width: 1038, height: 32 }">
     <v-layer>
       <KonvaImage :x="0" :y="0" :url="bgUrl" />
-
-      <v-text
-        :config="{
-          text: 'Hello Degica!',
-          x: 20,
-          y: 1,
-          fontSize: 14,
-          fontFamily: 'Press Start 2P',
-          fill: '#718F78',
-          shadowColor: '#DDD09B',
-          shadowOffsetX: 2,
-          shadowOffsetY: 2,
-        }"
-      />
-
+      <Logo />
       <KonvaImage :x="x" :y="y" :url="url" />
     </v-layer>
   </v-stage>
 </template>
 
 <script>
+import Logo from "../Logo/index";
 import KonvaImage from "../KonvaImage/index";
 import komojuFrontUrl from "../../assets/komoju-front.png";
 import komojuBackUrl from "../../assets/komoju-back.png";
@@ -30,6 +17,7 @@ import bgUrl from "../../assets/bg.png";
 
 export default {
   components: {
+    Logo,
     KonvaImage,
   },
 

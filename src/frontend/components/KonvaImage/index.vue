@@ -29,12 +29,24 @@ export default {
       image: null,
     };
   },
+
+  watch: {
+    url() {
+      this.loadImage();
+    },
+  },
   mounted() {
-    const image = new window.Image();
-    image.src = this.url;
-    image.onload = () => {
-      this.image = image;
-    };
+    this.loadImage();
+  },
+
+  methods: {
+    loadImage() {
+      const image = new window.Image();
+      image.src = this.url;
+      image.onload = () => {
+        this.image = image;
+      };
+    },
   },
 };
 </script>

@@ -12,10 +12,6 @@ setTimeout(() => {
   });
 }, 1000);
 
-document.addEventListener("electron-bridge-touchbar-tapped", () => {
-  console.log("touchbar tapped");
-});
-
 const renderOnTouchbar = () => {
   const canvas = document.getElementsByTagName("canvas")[0];
   const context = canvas.getContext("2d");
@@ -27,7 +23,7 @@ const renderOnTouchbar = () => {
 const mainLoop = () => {
   setInterval(() => {
     renderOnTouchbar();
-  }, 100);
+  }, 1000 / 30);
 };
 
 // go!

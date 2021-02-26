@@ -3,6 +3,7 @@
     <v-layer>
       <KonvaImage :x="0" :y="0" :url="bgUrl" />
       <Logo />
+      <Score :value="score" />
       <KonvaImage :x="dinoX" :y="dinoY" :url="dinoUrl" />
       <KonvaImage
         v-for="missile in missiles"
@@ -17,6 +18,7 @@
 
 <script>
 import Logo from "../Logo/index";
+import Score from "../Score/index";
 import KonvaImage from "../KonvaImage/index";
 import komojuFrontUrl from "../../assets/komoju-front.png";
 import komojuBackUrl from "../../assets/komoju-back.png";
@@ -26,11 +28,13 @@ import bgUrl from "../../assets/bg.png";
 export default {
   components: {
     Logo,
+    Score,
     KonvaImage,
   },
 
   data() {
     return {
+      totalMissilesCount: 0,
       missiles: [],
       missileSpeed: 5,
       lastMissileTimestamp: 0,
@@ -51,6 +55,10 @@ export default {
 
     dinoY() {
       return this.dinoPosition === 1 ? 0 : 16;
+    },
+
+    score() {
+      return this.totalMissilesCount - this.missiles.length;
     },
   },
 
@@ -94,6 +102,7 @@ export default {
           x: 1040,
           position: Math.random() * 100 < 50 ? 1 : 0,
         };
+        this.totalMissilesCount += 1;
         this.lastMissileTimestamp = Date.now();
         this.missiles.push(newMissile);
       }

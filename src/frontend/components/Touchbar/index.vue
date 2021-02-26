@@ -34,6 +34,8 @@ export default {
 
   data() {
     return {
+      state: "PLAY",
+      interval: null,
       totalMissilesCount: 0,
       missiles: [],
       missileSpeed: 5,
@@ -62,19 +64,45 @@ export default {
     },
   },
 
+  watch: {
+    state(newValue) {
+      if (newValue === "GAME_OVER") this.endGame();
+      if (newValue === "PLAY") this.startGame();
+    },
+  },
+
   mounted() {
     document.addEventListener("electron-bridge-touchbar-tapped", () => {
       this.dinoPosition *= -1;
+      this.state = "PLAY";
     });
+    this.startGame();
+  },
 
-    setInterval(() => {
-      this.moveDino();
-      this.moveMissiles();
-      this.spawnMissiles();
-    }, 1000 / 30);
+  beforeDestroy() {
+    clearInterval(this.interval);
   },
 
   methods: {
+    startGame() {
+      this.totalMissilesCount = 0;
+      this.missiles = [];
+      this.lastMissileTimestamp = 0;
+      this.dinoX = 50;
+      this.dinoDirection = 1;
+      this.dinoPosition = 1;
+      this.interval = setInterval(() => {
+        this.moveDino();
+        this.moveMissiles();
+        this.spawnMissiles();
+        this.checkCollision();
+      }, 1000 / 30);
+    },
+
+    endGame() {
+      clearInterval(this.interval);
+    },
+
     moveDino() {
       if (this.dinoDirection === 1) {
         this.dinoX = this.dinoX + this.dinoSpeed;
@@ -84,6 +112,7 @@ export default {
 
       if (this.dinoX > 700 || this.dinoX < 50) this.dinoDirection *= -1;
     },
+
     moveMissiles() {
       this.missiles = this.missiles
         .map((missile) =>
@@ -93,6 +122,7 @@ export default {
         )
         .filter((missile) => missile.x > -16);
     },
+
     spawnMissiles() {
       const shouldSpawn = Math.random() * 100 < 3 && this.lastMissileTimestamp - Date.now() < -500;
 
@@ -106,6 +136,20 @@ export default {
         this.lastMissileTimestamp = Date.now();
         this.missiles.push(newMissile);
       }
+    },
+
+    checkCollision() {
+      this.missiles.forEach((missile) => {
+        if (this.hit(missile)) {
+          this.state = "GAME_OVER";
+        }
+      });
+    },
+
+    hit(missile) {
+      if (missile.position !== this.dinoPosition) return false;
+      if (missile.x > this.dinoX - 3 && missile.x < this.dinoX + 16 + 3) return true;
+      return false;
     },
   },
 };

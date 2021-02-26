@@ -7,21 +7,32 @@
     "node": "12.20.2"
   },
   "scripts": {
-    "dev:lite": "NODE_ENV=development parcel serve --no-source-maps -p 3000 --out-dir ./.cache/_dev ./src/dev-index.html",
-    "dev": "concurrently -k -n parcel,elctrn 'yarn run dev:app' 'yarn run dev:electron'",
-    "dev:app": "NODE_ENV=development parcel serve --no-source-maps --public-url . --target node --out-dir ./.cache/_dev ./src/index.js ./src/index.html",
+    "dev:lite": "NODE_ENV=development parcel serve --no-source-maps -p 3000 --out-dir ./.cache/_dev ./src/frontend/index-dev.html",
+    "dev": "concurrently -k -n parcel,elctrn 'yarn run dev:frontend' 'yarn run dev:electron'",
+    "dev:frontend": "NODE_ENV=development parcel serve --no-source-maps --public-url ../ --target node --out-dir ./.cache/_dev ./src/electron-app.js ./src/frontend/index.html",
     "dev:electron": "NODE_ENV=development nodemon --watch './.cache/_dev/*.html' --watch './.cache/_dev/*.js' --exec 'electron .'"
   },
   "dependencies": {
     "electron": "^11.2.3"
   },
   "devDependencies": {
+    "@vue/component-compiler-utils": "^3.2.0",
     "concurrently": "^6.0.0",
+    "electron": "^11.2.3",
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.6.0",
+    "konva": "^7.2.4",
     "nodemon": "^2.0.7",
     "parcel": "^1.12.4",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "vue": "^2.6.12",
+    "vue-hot-reload-api": "^2.3.4",
+    "vue-konva": "^2.1.7",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "posthtml": {
+    "recognizeSelfClosing": true
   }
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  </head>
+
+  <body style="padding: 0; margin: 0; font-family: 'Press Start 2P'">
+    <canvas width="1038" height="32" id="app"></canvas>
+    <button onclick="document.dispatchEvent(new CustomEvent('electron-bridge-touchbar-tapped'));">Touchbar</button>
+
+    <script src="./ui.js"></script>
+    <script>
+      // fake electron bridge
+      document.addEventListener("electron-bridge", (e) => {
+        const { name, data } = e.detail;
+      });
+    </script>
+  </body>
+</html>

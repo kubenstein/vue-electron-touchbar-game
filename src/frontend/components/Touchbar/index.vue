@@ -5,22 +5,26 @@
       <v-text
         :config="{ text: 'Hello Degica', x: 50, y: 10, fontSize: 14, fontFamily: 'Press Start 2P', fill: 'black' }"
       />
-      <v-circle
-        :config="{
-          x: 30,
-          y: 15,
-          radius: 10,
-          fill: 'blue',
-          stroke: 'black',
-          strokeWidth: 4,
-        }"
-      />
+
+      <KonvaImage :x="10" :y="0" :url="url" />
     </v-layer>
   </v-stage>
 </template>
 
 <script>
-export default {};
+import KonvaImage from "../KonvaImage/index";
+import komojuUrl from "../../assets/komoju.png";
+export default {
+  components: {
+    KonvaImage,
+  },
+
+  computed: {
+    url() {
+      return komojuUrl;
+    },
+  },
+};
 </script>
 
 <style></style>

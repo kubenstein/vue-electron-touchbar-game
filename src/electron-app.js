@@ -9,7 +9,7 @@ app.whenReady().then(() => {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    width: 1138,
+    width: 1138 + 500,
     height: 500,
   });
   window.webContents.openDevTools();

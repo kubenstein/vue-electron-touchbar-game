@@ -2,8 +2,8 @@
   <v-stage id="app" :config="{ width: 1038, height: 32 }">
     <v-layer>
       <KonvaImage :x="0" :y="0" :url="bgUrl" />
-      <Logo />
-      <Score :value="score" />
+      <Logo v-if="state === 'PLAY'" />
+      <Score v-if="state === 'PLAY'" :value="score" />
       <KonvaImage :x="dinoX" :y="dinoY" :url="dinoUrl" />
       <KonvaImage
         v-for="missile in missiles"
@@ -12,6 +12,7 @@
         :y="missile.position === 1 ? 0 : 16"
         :url="missileUrl"
       />
+      <GameOver v-if="state === 'GAME_OVER'" :value="score" />
     </v-layer>
   </v-stage>
 </template>
@@ -19,6 +20,7 @@
 <script>
 import Logo from "../Logo/index";
 import Score from "../Score/index";
+import GameOver from "../GameOver/index";
 import KonvaImage from "../KonvaImage/index";
 import komojuFrontUrl from "../../assets/komoju-front.png";
 import komojuBackUrl from "../../assets/komoju-back.png";
@@ -28,6 +30,7 @@ import bgUrl from "../../assets/bg.png";
 export default {
   components: {
     Logo,
+    GameOver,
     Score,
     KonvaImage,
   },

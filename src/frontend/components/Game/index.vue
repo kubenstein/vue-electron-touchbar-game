@@ -135,7 +135,7 @@ export default {
         const newMissile = {
           id: `${Math.random()}`,
           x: 1040,
-          position: Math.random() * 100 < 50 ? 1 : 0,
+          position: Math.random() * 100 < 50 ? 1 : -1,
         };
         this.totalMissilesCount += 1;
         this.lastMissileTimestamp = Date.now();
@@ -153,7 +153,7 @@ export default {
 
     hit(missile) {
       if (missile.position !== this.dinoPosition) return false;
-      if (missile.x > this.dinoX - 3 && missile.x < this.dinoX + 16 + 3) return true;
+      if (missile.x > this.dinoX - 5 && missile.x < this.dinoX + 16 + 3) return true;
       return false;
     },
   },

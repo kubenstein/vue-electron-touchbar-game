@@ -13,12 +13,7 @@ app.whenReady().then(() => {
     height: 500,
   });
   window.webContents.openDevTools();
-  window.loadFile(path.join(__dirname, "./index.html"));
-
-  ipcMain.on("rerender", (_event, arg) => {
-    screenBtn.label = "";
-    screenBtn.icon = nativeImage.createFromDataURL(arg);
-  });
+  window.loadFile(path.join(__dirname, "./frontend/index.html"));
 
   const screenBtn = new TouchBarButton({
     label: "loading...",
@@ -32,4 +27,9 @@ app.whenReady().then(() => {
   });
 
   window.setTouchBar(touchBar);
+
+  ipcMain.on("rerender", (_event, arg) => {
+    screenBtn.label = "";
+    screenBtn.icon = nativeImage.createFromDataURL(arg);
+  });
 });

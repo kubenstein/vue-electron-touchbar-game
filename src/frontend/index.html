@@ -5,10 +5,12 @@
     <title>Hello World!</title>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
   </head>
 
-  <body style="padding: 0; margin: 0">
-    <canvas id="canvas"></canvas>
+  <body style="padding: 0; margin: 0; font-family: 'Press Start 2P'">
+    <canvas width="1038" height="32" id="app"></canvas>
     <script src="./ui.js"></script>
     <script src="./lib/electron-bridge.js"></script>
   </body>

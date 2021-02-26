@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueKonva from "vue-konva";
-import Touchbar from "./components/Touchbar/index.vue";
+import Game from "./components/Game/index.vue";
 
 Vue.use(VueKonva);
 
@@ -8,7 +8,7 @@ Vue.use(VueKonva);
 setTimeout(() => {
   new Vue({
     el: "#app",
-    render: (h) => h(Touchbar),
+    render: (h) => h(Game),
   });
 }, 1000);
 

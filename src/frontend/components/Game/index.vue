@@ -129,7 +129,7 @@ export default {
     },
 
     spawnMissiles() {
-      const shouldSpawn = Math.random() * 100 < 3 && this.lastMissileTimestamp - Date.now() < -500;
+      const shouldSpawn = Math.random() * 100 < 10 && this.lastMissileTimestamp - Date.now() < -500;
 
       if (shouldSpawn) {
         const newMissile = {
